@@ -6,14 +6,14 @@
 #    By: valeriiamuradian <valeriiamuradian@stud    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/26 15:11:15 by valeriiamur       #+#    #+#              #
-#    Updated: 2019/10/26 15:58:09 by valeriiamur      ###   ########.fr        #
+#    Updated: 2019/10/26 17:08:08 by valeriiamur      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= ft_retro
 
-SRC		=  Window.Class.cpp main.cpp GameEntity.Class.cpp
-HDRS     = Window.Class.hpp GameEntity.Class.hpp
+SRC		=  Window.Class.cpp main.cpp GameEntity.Class.cpp Player.Class.cpp
+HDRS     = Window.Class.hpp GameEntity.Class.hpp Player.Class.hpp
 OBJS     = $(SRC:.cpp=.o)
 FLAGS 	 = -lncurses
 
