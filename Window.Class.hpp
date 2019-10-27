@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Window.Class.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valeriiamuradian <valeriiamuradian@stud    +#+  +:+       +#+        */
+/*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 14:54:45 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/26 15:46:08 by valeriiamur      ###   ########.fr       */
+/*   Updated: 2019/10/27 03:06:16 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,17 @@
 class Window
 {
     public:
-    
+
         Window();
+        Window(const Window &src);
         ~Window();
+
+        Window  &operator=(const Window &rhs);
 
         int getWidth();
         int getHeight();
         WINDOW *getWin();
-    
+
     private:
         int _width;
         int _height;

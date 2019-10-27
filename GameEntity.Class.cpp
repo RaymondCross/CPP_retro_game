@@ -3,24 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   GameEntity.Class.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valeriiamuradian <valeriiamuradian@stud    +#+  +:+       +#+        */
+/*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 15:58:44 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/26 16:56:16 by valeriiamur      ###   ########.fr       */
+/*   Updated: 2019/10/27 05:37:41 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GameEntity.Class.hpp"
 
-GameEntity::GameEntity()
+GameEntity::GameEntity() : _gameObj('^'), _hit(false), _current_y(0), _current_x(0), _HP(100)
 {
     return;
 }
 
-GameEntity::GameEntity(std::string gameObj)
+GameEntity::GameEntity(char gameObj) : _gameObj(gameObj), _hit(false), _current_y(0), _current_x(0), _HP(100)
 {
-    this->_gameObj = gameObj;
-    this->_hit = false;
     return;
 }
 
@@ -40,32 +38,65 @@ GameEntity &GameEntity::operator=(const GameEntity &rhs)
 	if (this != &rhs)
 	{
 		this->_gameObj = rhs._gameObj;
-		this->current_x = rhs.current_x;
-		this->current_y = rhs.current_y;
+		this->_current_x = rhs._current_x;
+		this->_current_y = rhs._current_y;
+		this->_HP = rhs._HP;
 	}
 	return (*this);
 }
 
 void GameEntity::moveleft(int max)
 {
-	if (this->current_x > 1  && this->current_x < max)
-		this->current_x--;
+	(void)max;
+	if (this->_current_x > 1)
+		this->_current_x--;
 }
 
 void GameEntity::moveright(int max)
 {
-	if (this->current_x + gameObj.length() <= (max - gameObj.length() + 1))
-		this->current_x++;
+	if (this->_current_x < max - 1)
+		this->_current_x++;
 }
 
 void GameEntity::moveup(int max)
 {
-	if (this->current_y > 1 && this->current_y < max)
-		this->current_y--;
+	(void)max;
+	if (this->_current_y > 1)
+		this->_current_y--;
 }
 
 void GameEntity::movedown(int max)
 {
-	if (this->current_y <= max + 1)
-		this->current_y++;
+	if (this->_current_y < max - 1)
+		this->_current_y++;
+}
+
+char	GameEntity::getObj()
+{
+	return this->_gameObj;
+}
+
+int GameEntity::getX()
+{
+	return this->_current_x;
+}
+
+int GameEntity::getY()
+{
+	return this->_current_y;
+}
+
+int GameEntity::getHP()
+{
+	return this->_HP;
+}
+
+void    GameEntity::setX(int x)
+{
+	this->_current_x = x;
+}
+
+void    GameEntity::setY(int y)
+{
+	this->_current_y = y;
 }

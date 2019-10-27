@@ -3,23 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: valeriiamuradian <valeriiamuradian@stud    +#+  +:+       +#+         #
+#    By: rcross <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/26 15:11:15 by valeriiamur       #+#    #+#              #
-#    Updated: 2019/10/26 17:08:08 by valeriiamur      ###   ########.fr        #
+#    Updated: 2019/10/27 04:28:56 by rcross           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= ft_retro
 
-SRC		=  Window.Class.cpp main.cpp GameEntity.Class.cpp Player.Class.cpp
+SRC		=  Window.Class.cpp main.cpp GameEntity.Class.cpp Player.Class.cpp \
+	Game.Class.cpp Projectile.Class.cpp
 HDRS     = Window.Class.hpp GameEntity.Class.hpp Player.Class.hpp
 OBJS     = $(SRC:.cpp=.o)
-FLAGS 	 = -lncurses
+FLAGS 	 = -Wall -Wextra -Werror -lncurses
 
 all: $(NAME)
-$(NAME): $(OBJS) $(HDRS)
-	g++ $(FLAGS) $(OBJS) -o $(NAME)
+
+$(NAME):
+	g++ $(FLAGS) $(SRC) -o $(NAME)
 
 clean:
 	@rm -f $(OBJS)

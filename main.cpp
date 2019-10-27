@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valeriiamuradian <valeriiamuradian@stud    +#+  +:+       +#+        */
+/*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 14:58:59 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/26 15:39:20 by valeriiamur      ###   ########.fr       */
+/*   Updated: 2019/10/27 03:10:31 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Window.Class.hpp"
+#include "Game.Class.hpp"
 
 #include <ncurses.h>
 #include <iostream>
@@ -18,10 +18,11 @@
 
 int main(void)
 {
-    Window *screen = new Window;
-    sleep( 3 );
+    // Window *screen = new Window;
+    Game    *game = new Game;
 
-    delete screen;
+    // delete screen;
+    delete game;
 
     return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Window.Class.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valeriiamuradian <valeriiamuradian@stud    +#+  +:+       +#+        */
+/*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 14:57:21 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/26 15:56:33 by valeriiamur      ###   ########.fr       */
+/*   Updated: 2019/10/27 05:24:00 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,15 @@ Window::Window()
     cbreak(); //one char at a time
     noecho(); // suppress the automatic echoing of typed characters
     getmaxyx(stdscr, _height, _width); //get the size od the win
+    curs_set(0);
     _w = newwin(_height, _width, 0, 0); //separate window
-    refresh();
     wtimeout(_w, 0);
+    start_color();
+    init_pair(1, COLOR_WHITE, COLOR_BLACK);
+    attron(COLOR_PAIR(1));
     box(_w, (int)c, (int)c);
-    wrefresh(_w);
+    keypad(stdscr, TRUE);
+    refresh();
 }
 
 Window::~Window()
@@ -39,16 +43,16 @@ Window::~Window()
 }
 
 int Window::getWidth()
-{ 
-    return _width; 
+{
+    return _width;
 }
 
-int Window::getHeight()          
-{ 
-    return _height; 
+int Window::getHeight()
+{
+    return _height;
 }
 
 WINDOW *Window::getWin()
-{ 
-    return _w; 
+{
+    return _w;
 }
