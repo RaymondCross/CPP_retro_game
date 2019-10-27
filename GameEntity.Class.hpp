@@ -6,7 +6,7 @@
 /*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 15:57:11 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/27 05:10:26 by rcross           ###   ########.fr       */
+/*   Updated: 2019/10/27 14:20:02 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ class GameEntity
         void    setY(int y);
 
         // void    takeDamage();
-        // virtual void    fire();
+        virtual void    fire() = 0;
 };
 
 #endif

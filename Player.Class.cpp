@@ -6,7 +6,7 @@
 /*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 16:57:06 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/27 05:02:25 by rcross           ###   ########.fr       */
+/*   Updated: 2019/10/27 14:10:54 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,9 @@ Player::~Player()
 int		Player::getLives()
 {
 	return this->_lives;
+}
+
+void	Player::fire()
+{
+
 }

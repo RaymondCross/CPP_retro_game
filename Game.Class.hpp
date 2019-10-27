@@ -4,6 +4,8 @@
 # include "GameEntity.Class.hpp"
 # include "Player.Class.hpp"
 # include "Window.Class.hpp"
+# include <cstdlib>
+# include <iostream>
 
 # define WIN	this->_window->getWin()
 # define WIN_HEIGHT	this->_window->getHeight()
@@ -19,13 +21,13 @@ typedef struct	s_enemies
 	s_enemies	*next;
 }				t_enemies;
 
-// state: 0 = main menu; 1 = game loop; 2 = death screen; 3 = help menu
+// state: 0 = main menu; 1 = game loop; 2 = death screen; 3 = help menu;
 class Game
 {
 private:
 	Window	*_window;
 	Player	*_player;
-	t_enemies	*_enemies;//-----------------
+	// t_enemies	*_enemies;//-----------------
 	int	_total_enemies;
 	int	_score;
 	int	_state;
@@ -42,7 +44,17 @@ public:
 	void	deathScreen();
 	void	helpMenu();
 
-	// void	spawnEnemy();
+	void	restart();
+
+	void	detectCollision();
+
+	void	drawHUD();
+	void	drawEntities();
+	void	drawPlayer();
+
+	// void	spawnEnemy();//can call this method at certain ticks
+	// void	enemyShoot();//can call this method at certain ticks
+
 	void	displayState();
 
 	void	setState(int state);
