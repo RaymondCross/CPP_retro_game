@@ -6,7 +6,7 @@
 /*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 15:57:11 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/27 14:20:02 by rcross           ###   ########.fr       */
+/*   Updated: 2019/10/27 17:49:41 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ class GameEntity
 {
     protected:
         char    _gameObj;
-        bool _hit;//???
         int _current_y;
 	    int _current_x;
-        int _HP;
+        bool    _visible;
 
     public:
         //constructors and destructors
         GameEntity();
         GameEntity(const GameEntity &src);
         GameEntity(char gameObj);
+        GameEntity(char gameObj, int y, int x);
         virtual ~GameEntity();
 
         GameEntity &operator=(const GameEntity &rhs);
@@ -42,13 +42,10 @@ class GameEntity
         char    getObj();
         int getX();
         int getY();
-        int getHP();
+        bool    getVisible();
 
         void    setX(int x);
         void    setY(int y);
-
-        // void    takeDamage();
-        virtual void    fire() = 0;
 };
 
 #endif

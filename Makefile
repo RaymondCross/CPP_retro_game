@@ -6,29 +6,53 @@
 #    By: rcross <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/26 15:11:15 by valeriiamur       #+#    #+#              #
-#    Updated: 2019/10/27 04:28:56 by rcross           ###   ########.fr        #
+#    Updated: 2019/10/27 16:32:27 by rcross           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= ft_retro
+GREEN =		\033[1;32m
 
-SRC		=  Window.Class.cpp main.cpp GameEntity.Class.cpp Player.Class.cpp \
-	Game.Class.cpp Projectile.Class.cpp
-HDRS     = Window.Class.hpp GameEntity.Class.hpp Player.Class.hpp
-OBJS     = $(SRC:.cpp=.o)
-FLAGS 	 = -Wall -Wextra -Werror -lncurses
+RED =		\033[1;31m
+
+RES =		\033[0m
+
+#------------------------------------------------------------------------------#
+
+NAME	:=	ft_retro
+DNAME	:=	d_$(NAME)
+
+CC		:=	clang++
+
+CFLAGS	:=	-Wall -Wextra -Werror -lncurses
+DFLAGS	:=	-Wall -Wextra -g
+
+FILES	:=	main.cpp\
+			Game.Class.cpp\
+			Window.Class.cpp\
+			GameEntity.Class.cpp\
+			Player.Class.cpp\
+			Enemy.Class.cpp\
+			Projectile.Class.cpp\
+			Asteroid.Class.cpp\
+
+$(NAME):
+	@$(CC) $(CFLAGS) $(FILES) -o $(NAME)
+	@echo "[$(GREEN)$@$(RES)] compiled."
 
 all: $(NAME)
 
-$(NAME):
-	g++ $(FLAGS) $(SRC) -o $(NAME)
+d:	dclean
+	@$(CC) $(DFLAGS) $(FILES) -o $(DNAME)
+	@echo "[$(GREEN)$(DNAME)$(RES)] compiled."
 
 clean:
-	@rm -f $(OBJS)
-	@echo "All Objects removed!"
-
-fclean: clean
 	@rm -f $(NAME)
-	@echo "$(NAME) also removed!"
+	@echo "[$(GREEN)$(NAME)$(RES)] removed."
 
-re:     fclean all
+dclean:
+	@rm -rf $(DNAME) $(DNAME).dSYM/
+	@echo "[$(GREEN)$(DNAME)$(RES)] removed."
+
+re: clean all
+
+.PHONY: all d clean dclean re

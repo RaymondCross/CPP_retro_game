@@ -3,22 +3,22 @@
 
 # include "GameEntity.Class.hpp"
 
-class Asteroid : public GameEntity
-{
-private:
+// class Asteroid : public GameEntity
+// {
+// private:
 
-public:
-	Asteroid();
-	~Asteroid();
-};
+// public:
+// 	Asteroid();
+// 	~Asteroid();
+// };
 
-Asteroid::Asteroid()
-{
-}
+// Asteroid::Asteroid()
+// {
+// }
 
-Asteroid::~Asteroid()
-{
-}
+// Asteroid::~Asteroid()
+// {
+// }
 
 
 #endif

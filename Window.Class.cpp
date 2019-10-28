@@ -6,7 +6,7 @@
 /*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 14:57:21 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/27 14:49:56 by rcross           ###   ########.fr       */
+/*   Updated: 2019/10/27 15:38:42 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 
 Window::Window()
 {
-    char c = '*'; //for borders
-
     initscr(); //init
     cbreak(); //one char at a time
     noecho(); // suppress the automatic echoing of typed characters
@@ -32,8 +30,8 @@ Window::Window()
     init_pair(1, COLOR_WHITE, COLOR_BLACK);// TEXT COLOR
     init_pair(2, COLOR_GREEN, COLOR_BLACK);// PLAYER COLOR
     init_pair(3, COLOR_RED, COLOR_BLACK);// ENEMY COLOR
-    box(_w, (int)c, (int)c);
     keypad(stdscr, TRUE);
+    clear();
     refresh();
 }
 

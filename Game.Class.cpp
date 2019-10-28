@@ -1,6 +1,13 @@
 #include "Game.Class.hpp"
 
-Game::Game() : _total_enemies(0), _score(0), _state(0), _tick(0)
+// Game::Game() : _enemies(NULL), _score(0), _state(0), _tick(0)
+// {
+// 	this->_window = new Window();
+// 	while (this->_window)
+// 		this->displayState();
+// }
+
+Game::Game() : _enemies(NULL), _projectiles(NULL), _score(0), _state(0), _tick(0)
 {
 	this->_window = new Window();
 	while (this->_window)
@@ -21,7 +28,7 @@ Game	&Game::operator=(const Game &rhs)
 	if (this != &rhs)
 	{
 		this->_window = rhs._window;
-		// this->_enemies = rhs._enemies;
+		this->_player = rhs._player;
 		this->_score = rhs._score;
 		this->_state = rhs._state;
 		this->_tick = rhs._tick;
@@ -46,35 +53,44 @@ void	Game::displayState()
 		{&Game::mainMenu},
 		{&Game::gameLoop},
 		{&Game::deathScreen},
-		{&Game::helpMenu}
+		{&Game::pauseMenu}
 	};
 
 	(this->*states[this->_state].f)();
-	usleep(10000);
-	wrefresh(WIN);
+	// usleep(10000);
 	this->_tick++;
 }
 
 void	Game::mainMenu()
 {
+	// display main menu
+	clear();
 	attron(COLOR_PAIR(1));
-	mvwaddstr(WIN, WIN_HEIGHT / 2 - 3, WIN_WIDTH / 2 - 10, "<SAD SPACE INVADERS>");
-	mvwaddstr(WIN, WIN_HEIGHT / 2, WIN_WIDTH / 2 - 13, "Press 'SPACEBAR' to start");
+	mvaddstr(WIN_HEIGHT / 2 - 3, WIN_WIDTH / 2 - 15, "<SAD SPACE INVADERS>");
+	mvaddstr(WIN_HEIGHT / 2, WIN_WIDTH / 2 - 17, "Press 'SPACEBAR' to start");
 	attroff(COLOR_PAIR(1));
-	wrefresh(WIN);
+	refresh();
 
 	char	in;
 
 	while (this->_window)
 	{
-		in = wgetch(WIN);
+		in = getch();
 		if (in == ' ')
 		{
 			this->setState(1);
 			this->_player = new Player;
-			this->_player->setY(WIN_HEIGHT / 2);
-			this->_player->setX(10);
-			werase(WIN);
+			this->_player->setY(PLAYER_START_Y);
+			this->_player->setX(PLAYER_START_X);
+			// for (int i = 0; i < NUM_ENEMIES; i++)
+			// {
+			// 	this->_enemies[i] = new Enemy;
+			// 	this->_enemies[i]->setY(this->_pos);
+			// 	this->_enemies[i]->setX(WIN_WIDTH - 2);
+
+			// 	mvaddch(this->_enemies[i]->getY(), this->_enemies[i]->getX(), this->_enemies[i]->getObj());
+			// 	this->_pos++;
+			// }
 			break ;
 		}
 	}
@@ -82,7 +98,7 @@ void	Game::mainMenu()
 
 void	Game::gameLoop()
 {
-	nodelay(WIN, true);
+	nodelay(stdscr, true);
 	char	in;
 
 	if (!this->_player->getLives())
@@ -90,7 +106,7 @@ void	Game::gameLoop()
 		this->setState(2);
 		return ;
 	}
-	in = std::tolower(wgetch(WIN));
+	in = std::tolower(getch());
 	switch (in)
 	{
 	case 'w':
@@ -115,30 +131,83 @@ void	Game::gameLoop()
 
 	case 'k':
 		this->setState(2);
-		break;
+		return;
 
 	case ' ':
-		this->_player->fire();
+		this->spawnProjectile(new Projectile('>', this->_player->getY(), this->_player->getX() + 1));
 		break;
 
 	default:
 		break;
 	}
 
+	// for (int i = 0; i < NUM_ENEMIES; i++) //move all enemies every sec
+	// {
+	// 	// this->enemies[i]->move(*win);
+	// }
+
 	if (this->_tick % 50 == 0)
 	{
-		// this->spawnEnemy();
+		std::srand(std::time(NULL));
+		this->spawnEnemy(new Enemy((std::rand() % WIN_HEIGHT - 1), WIN_WIDTH - 1));
 	}
-	if (this->_tick % 25 == 0)
-	{
-		// this->enemyShoot();
-	}
+
+	// if (this->_tick % 100 == 0)
+	// {
+	// 	// this->spawnAsteroid();
+	// 	(void)this->_asteroids;
+	// }
+
+	// if (this->_tick % 25 == 0)
+	// {
+	// 	// this->enemyShoot();
+	// }
 
 	// this->detectCollision();
+	// this->moveEntities();
 
-	werase(WIN);
+	clear();
 	this->drawHUD();
 	this->drawEntities();
+	refresh();
+}
+
+void	Game::spawnEnemy(Enemy *e)
+{
+	t_list      *current;
+    t_list      *node = new t_list;
+
+	node->entity = e;
+    node->next = NULL;
+
+    if (!this->_enemies)
+        this->_enemies = node;
+    else
+	{
+        current = this->_enemies;
+        while (current->next)
+            current = current->next;
+        current->next = node;
+    }
+}
+
+void	Game::spawnProjectile(Projectile *p)
+{
+	t_list      *current;
+    t_list      *node = new t_list;
+
+	node->entity = p;
+    node->next = NULL;
+
+    if (!this->_projectiles)
+        this->_projectiles = node;
+    else
+	{
+        current = this->_projectiles;
+        while (current->next)
+            current = current->next;
+        current->next = node;
+    }
 }
 
 void	Game::drawHUD()
@@ -146,12 +215,15 @@ void	Game::drawHUD()
 	std::string	s;
 
 	attron(COLOR_PAIR(1));
-	mvwaddstr(WIN, WIN_HEIGHT - 2, 2, "LIVES: ");// draw lives
+
+	mvaddstr(WIN_HEIGHT - 2, 2, "LIVES: ");// draw lives
 	s = std::to_string(this->_player->getLives());
-	mvwaddstr(WIN, WIN_HEIGHT - 2, 9, s.c_str());
-	mvwaddstr(WIN, WIN_HEIGHT - 2, 11, "SCORE: ");// draw score
+	mvaddstr(WIN_HEIGHT - 2, 9, s.c_str());
+
+	mvaddstr(WIN_HEIGHT - 2, 11, "SCORE: ");// draw score
 	s =  std::to_string(this->_score);
-	mvwaddstr(WIN, WIN_HEIGHT - 2, 18, s.c_str());
+	mvaddstr(WIN_HEIGHT - 2, 18, s.c_str());
+
 	attroff(COLOR_PAIR(1));
 }
 
@@ -159,38 +231,78 @@ void	Game::drawEntities()
 {
 	this->drawPlayer();
 	// this->drawEnemies();
-	// this->drawProjectiles();
+	this->drawProjectiles();
 	// this->drawAsteroids();
+}
+
+void	Game::moveEntities()
+{
+	this->moveEnemies();
+	// this->moveProjectiles();
+	// this->moveAsteroids();
+}
+
+void	Game::moveProjectiles()
+{
+
+}
+
+void	Game::moveEnemies()
+{
+	t_list      *tmp;
+
+	tmp = this->_enemies;
+	while (tmp)
+	{
+		tmp->entity->setX(tmp->entity->getX() - 1);
+		tmp = tmp->next;
+	}
 }
 
 void	Game::drawPlayer()
 {
 	attron(COLOR_PAIR(2));
-	mvwaddch(WIN, PLAYER_Y, PLAYER_X, PLAYER_CHAR);// draw player
+	mvaddch(PLAYER_Y - 1, PLAYER_X -1, PLAYER_CHAR);
+	mvaddch(PLAYER_Y, PLAYER_X, PLAYER_CHAR);
+	mvaddch(PLAYER_Y + 1, PLAYER_X - 1, PLAYER_CHAR);
 	attroff(COLOR_PAIR(2));
+}
+
+void	Game::drawProjectiles()
+{
+	t_list	*current;
+
+	current = this->_projectiles;
+	while (current)
+	{
+		if (current->entity->getVisible())
+		{
+			attron(COLOR_PAIR(1));
+			mvaddch(current->entity->getY(), current->entity->getX(), current->entity->getObj());
+			attroff(COLOR_PAIR(1));
+		}
+		current = current->next;
+	}
 }
 
 void	Game::deathScreen()
 {
 	delete this->_player;
-	// this->_enemies = NULL;
-	nodelay(WIN, false);
 
 	char	in;
 
 	// display death screen
-
-	werase(WIN);
+	clear();
 	attron(COLOR_PAIR(1));
-	mvwprintw(WIN, WIN_HEIGHT / 2 - 3, WIN_WIDTH / 2 - 10, "<YOU DIED>");
-	mvwprintw(WIN, WIN_HEIGHT / 2, WIN_WIDTH / 2 - 13, "Press 'R' to restart");
-	mvwprintw(WIN, WIN_HEIGHT / 2 + 3, WIN_WIDTH / 2 - 13, "Press 'Q' to quit");
+	mvaddstr(WIN_HEIGHT / 2 - 3, WIN_WIDTH / 2 - 15, "<YOU DIED>");
+	mvaddstr(WIN_HEIGHT / 2, WIN_WIDTH / 2 - 19, "Press 'R' to restart");
+	mvaddstr(WIN_HEIGHT / 2 + 3, WIN_WIDTH / 2 - 18, "Press 'Q' to quit");
 	attroff(COLOR_PAIR(1));
-	wrefresh(WIN);
+	refresh();
 
 	while (this->_window)
 	{
-		in = std::tolower(wgetch(WIN));
+		in = std::tolower(getch());
 		if (in == 'r')
 		{
 			this->restart();
@@ -199,31 +311,44 @@ void	Game::deathScreen()
 		}
 		else if (in == 'q')
 		{
-			werase(WIN);
 			delete this->_window;
 			std::exit(1);
-			// this->exit();
 		}
 	}
 }
 
-void	Game::helpMenu()
+void	Game::pauseMenu()
 {
-	nodelay(WIN, false);
-
 	char	in;
 
-	// display
+	// display pause menu
+	refresh();
 	attron(COLOR_PAIR(1));
-	mvwprintw(WIN, WIN_HEIGHT / 2 - 3, WIN_WIDTH / 2 - 10, "<WASD> to move");
-	mvwprintw(WIN, WIN_HEIGHT / 2, WIN_WIDTH / 2 - 12, "<SPACEBAR> to shoot");
-	mvwprintw(WIN, WIN_HEIGHT / 2 + 3, WIN_WIDTH / 2 - 14, "Press any key to resume");
+	mvaddstr(WIN_HEIGHT / 2 - 6, WIN_WIDTH / 2 - 15, "=PAUSE=");
+	mvaddstr(WIN_HEIGHT / 2 - 4, WIN_WIDTH / 2 - 18, "<WASD> to move");
+	mvaddstr(WIN_HEIGHT / 2 - 2, WIN_WIDTH / 2 - 20, "<SPACEBAR> to shoot");
+	mvaddstr(WIN_HEIGHT / 2 + 3, WIN_WIDTH / 2 - 23, "Press <SPACEBAR> to resume");
+	mvaddstr(WIN_HEIGHT / 2 + 5, WIN_WIDTH / 2 - 21, "Press <R> to restart");
+	mvaddstr(WIN_HEIGHT / 2 + 7, WIN_WIDTH / 2 - 19, "Press <Q> to quit");
 	attroff(COLOR_PAIR(1));
+	refresh();
+
 	while (this->_window)
 	{
-		in = std::tolower(wgetch(WIN));
-		if (in)
+		in = std::tolower(getch());
+		if (in == ' ')
 			break;
+		else if(in == 'r')
+		{
+			this->restart();
+			this->setState(1);
+			break;
+		}
+		else if (in == 'q')
+		{
+			delete this->_window;
+			std::exit(1);
+		}
 	}
 	this->setState(1);
 }
@@ -231,13 +356,15 @@ void	Game::helpMenu()
 void	Game::restart()
 {
 	this->_player = new Player;
-	this->_player->setY(WIN_HEIGHT / 2);
-	this->_player->setX(10);
-	this->_total_enemies = 0;
+	this->_player->setY(PLAYER_START_Y);
+	this->_player->setX(PLAYER_START_X);
+	// this->_enemies = NULL;
+	// this->_projectiles = NULL;
+	// this->_asteroids = NULL;
 	this->_score = 0;
 	this->_tick = 0;
-	werase(WIN);
-	mvwaddch(WIN, PLAYER_Y, PLAYER_X, PLAYER_CHAR);
+	refresh();
+	mvaddch(PLAYER_Y, PLAYER_X, PLAYER_CHAR);
 }
 
 void	Game::detectCollision()

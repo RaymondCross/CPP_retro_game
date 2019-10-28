@@ -6,20 +6,24 @@
 /*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 15:58:44 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/27 05:37:41 by rcross           ###   ########.fr       */
+/*   Updated: 2019/10/27 18:06:56 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GameEntity.Class.hpp"
 
-GameEntity::GameEntity() : _gameObj('^'), _hit(false), _current_y(0), _current_x(0), _HP(100)
+GameEntity::GameEntity() : _gameObj('^'), _current_y(0), _current_x(0), _visible(true)
 {
     return;
 }
 
-GameEntity::GameEntity(char gameObj) : _gameObj(gameObj), _hit(false), _current_y(0), _current_x(0), _HP(100)
+GameEntity::GameEntity(char gameObj) : _gameObj(gameObj), _current_y(0), _current_x(0), _visible(true)
 {
     return;
+}
+
+GameEntity::GameEntity(char gameObj, int y, int x) : _gameObj(gameObj), _current_y(y), _current_x(x), _visible(true)
+{
 }
 
 GameEntity::~GameEntity()
@@ -40,7 +44,6 @@ GameEntity &GameEntity::operator=(const GameEntity &rhs)
 		this->_gameObj = rhs._gameObj;
 		this->_current_x = rhs._current_x;
 		this->_current_y = rhs._current_y;
-		this->_HP = rhs._HP;
 	}
 	return (*this);
 }
@@ -67,7 +70,7 @@ void GameEntity::moveup(int max)
 
 void GameEntity::movedown(int max)
 {
-	if (this->_current_y < max - 1)
+	if (this->_current_y < max - 2)
 		this->_current_y++;
 }
 
@@ -86,9 +89,9 @@ int GameEntity::getY()
 	return this->_current_y;
 }
 
-int GameEntity::getHP()
+bool    GameEntity::getVisible()
 {
-	return this->_HP;
+	return this->_visible;
 }
 
 void    GameEntity::setX(int x)
