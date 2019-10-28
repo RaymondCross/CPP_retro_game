@@ -6,7 +6,7 @@
 /*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 16:57:06 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/27 17:39:49 by rcross           ###   ########.fr       */
+/*   Updated: 2019/10/27 22:54:24 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,28 @@ void	Player::loseLife(int y)
 int		Player::getLives()
 {
 	return this->_lives;
+}
+
+bool	Player::isTouched(int y, int x)
+{
+	// E
+	//  E
+	// E
+
+	// top character
+	if (this->getX() - 1 == x && this->getY() -1 == y)
+	{
+		return true;
+	}
+	// middle character
+	if (this->getX() == x && this->getY() == y)
+	{
+		return true;
+	}
+	// bottom character
+	if (this->getX() - 1 == x && this->getY() + 1 == y)
+	{
+		return true;
+	}
+	return false;
 }

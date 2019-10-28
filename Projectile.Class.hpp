@@ -6,7 +6,7 @@
 class Projectile : public GameEntity
 {
 private:
-	bool	player_proj;
+
 public:
 	Projectile();
 	Projectile(const Projectile &src);

@@ -6,7 +6,7 @@
 /*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 15:58:44 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/27 18:06:56 by rcross           ###   ########.fr       */
+/*   Updated: 2019/10/27 21:41:58 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,11 @@ int GameEntity::getY()
 bool    GameEntity::getVisible()
 {
 	return this->_visible;
+}
+
+void    GameEntity::setVisible(bool b)
+{
+	this->_visible = b;
 }
 
 void    GameEntity::setX(int x)

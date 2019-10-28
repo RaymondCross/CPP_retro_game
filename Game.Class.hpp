@@ -33,9 +33,9 @@ class Game
 private:
 	Window	*_window;
 	Player	*_player;
-	t_list	*_enemies;//-----------------
-	t_list	*_projectiles;//-----------------
-	// t_list	*_asteroids;//-----------------
+	t_list	*_enemies;
+	t_list	*_projectiles;
+	t_list	*_asteroids;
 	int	_score;
 	int	_state;
 	int	_tick;
@@ -53,28 +53,31 @@ public:
 
 	void	restart();
 
-	void	detectCollision();
-
 	void	drawHUD();
 
 	void	drawEntities();
 	void	drawPlayer();
 	void	drawEnemies();
 	void	drawProjectiles();
+	void	drawAsteroids();
 
-	void	moveEntities();
 	void	moveEnemies();
 	void	moveProjectiles();
+	void	moveAsteroids();
 
 	void	spawnProjectile(Projectile *p);
-
 	void	spawnEnemy(Enemy *e);
-	// void	spawnAsteroid(Asteroid *);//can call this method at certain ticks
-	// void	enemyShoot();//can call this method at certain ticks
+	void	spawnAsteroid(Asteroid *a);
+
+	void	enemyShoot();
+
+	void	detectCollision();
 
 	void	displayState();
 
 	void	setState(int state);
+
+	void	pew(std::string sound);
 };
 
 #endif

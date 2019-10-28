@@ -2,8 +2,6 @@
 # define ENEMY_CLASS_HPP
 
 #include "GameEntity.Class.hpp"
-// #include "Window.Class.hpp"
-// #include "Game.Class.hpp"
 
 class Enemy : public GameEntity
 {

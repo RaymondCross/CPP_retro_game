@@ -6,7 +6,7 @@
 /*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 16:57:00 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/27 17:39:44 by rcross           ###   ########.fr       */
+/*   Updated: 2019/10/27 21:42:11 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ class Player : public GameEntity
         int getLives();
 
         void    loseLife(int y);
+
+        bool    isTouched(int y, int x);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rcross <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 15:57:11 by valeriiamur       #+#    #+#             */
-/*   Updated: 2019/10/27 17:49:41 by rcross           ###   ########.fr       */
+/*   Updated: 2019/10/27 21:44:33 by rcross           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ class GameEntity
         int getX();
         int getY();
         bool    getVisible();
+        // virtual bool    getBool();// only for projectile class
 
         void    setX(int x);
         void    setY(int y);
+        void    setVisible(bool b);
 };
 
 #endif
